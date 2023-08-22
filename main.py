@@ -23,10 +23,6 @@ all_sprites = pygame.sprite.Group()
 
 player = Player(100, 100, bird_spr)
 spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_sprites)
-#pipe = Pipe('assets/pipe_up_top.png', 800, 400, 20)
-#pipe_2 = Pipe('assets/pipe_upside_down.png', 800, 20, -200)
-
-
 
 #objetos 
 objects = []

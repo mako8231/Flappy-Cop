@@ -31,7 +31,12 @@ class Spawner():
             
             self.pipes.append(up_pipe)
             self.pipes.append(down_pipe)
-            
+
+            #removendo os canos do limite da tela
+            for pipe in self.pipes:
+                if pipe.sprite.rect.right < 0:
+                    pipe.sprite.kill
+                    self.pipes.remove(pipe)
         pass
     def draw(self):
         if len(self.pipes) > 0:
