@@ -22,7 +22,7 @@ all_sprites = pygame.sprite.Group()
 
 
 player = Player(100, 100, bird_spr)
-spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_sprites)
+spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_sprites, player)
 
 #objetos 
 objects = []
@@ -33,7 +33,7 @@ for obj in objects:
     all_sprites.add(obj.sprite)
 
 # Colors
-white = (255, 255, 255)
+gray = (127, 127, 127)
 black = (0, 0, 0)
 
 # Game loop
@@ -60,12 +60,14 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and player.alive:
             if event.key == pygame.K_SPACE:
+                player.velocidade['y'] = -5
+            if event.key == pygame.K_z:
                 player.velocidade['y'] = -5
 
     # Clear the screen
-    screen.fill(white)
+    screen.fill(gray)
 
     # Draw game elements
     # ... (your drawing code here)

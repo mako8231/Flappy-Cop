@@ -8,6 +8,7 @@ class Player():
         self.y = y
         self.velocidade = {'x':0, 'y':0}
         self.sprite = sprite.Sprite(picture_path, self.x, self.y)
+        self.alive = True 
 
     def update(self, dt):
         self.velocidade['y'] += LINEAR_VEL * dt 
