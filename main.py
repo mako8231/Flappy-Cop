@@ -12,7 +12,7 @@ pygame.init()
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("My Pygame App")
+pygame.display.set_caption("FlappyCop")
 
 #bird 
 bird_spr = 'assets/char.png'
@@ -20,14 +20,14 @@ bird_spr = 'assets/char.png'
 #grupo de sprites
 all_sprites = pygame.sprite.Group()
 
-
+#objetos 
 player = Player(100, 100, bird_spr)
 spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_sprites, player)
-
-#objetos 
 objects = []
 objects.append(player)
 
+#score
+score = 0
 
 for obj in objects:
     all_sprites.add(obj.sprite)
@@ -40,6 +40,10 @@ black = (0, 0, 0)
 clock = pygame.time.Clock()
 running = True
 tempo_anterior = pygame.time.get_ticks()
+
+#processar texto
+font = pygame.font.Font(None, 36)
+
 #controle de inputs do teclado
 def input_events():
     pass
@@ -57,6 +61,11 @@ def update(dt:float):
     pass
 
 while running:
+    text = font.render("Max Score: {}".format(int(score)), False, (255, 255, 255))
+    text_rect = text.get_rect(center=(100, 100))
+
+    
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -77,14 +86,17 @@ while running:
     if (len(spawner.pipes) > 0):
         for pipe in spawner.pipes: 
             pipe.draw()    
-    
     all_sprites.draw(screen)
-
+    screen.blit(text, text_rect)
+   
 
     #calculando o delta-time 
     tempo_atual = pygame.time.get_ticks()
     dt = (tempo_atual - tempo_anterior) / 1000.0
     tempo_anterior = tempo_atual
+    
+    if player.alive:
+        score += 1 * dt
 
     update(dt)
     input_events()

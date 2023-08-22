@@ -22,8 +22,8 @@ class Player():
         pass
 
     def draw(self):
-        scaled_sprite = pygame.transform.scale(self.sprite.image, (self.sprite.rect.width*2, 
-                                                                          self.sprite.rect.height*2))
+        scaled_sprite = pygame.transform.scale(self.sprite.image, (self.sprite.rect.width*1.5, 
+                                                                          self.sprite.rect.height*1.5))
         self.sprite.image = scaled_sprite
         self.sprite.rect.x = self.x 
         self.sprite.rect.y = self.y 
