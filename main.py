@@ -17,7 +17,7 @@ pygame.display.set_caption("My Pygame App")
 bird_spr = 'assets/char.png'
 
 player = Player(100, 100, bird_spr)
-pipe = Pipe('assets/pipe_up_top.png', 300, 400, 0)
+pipe = Pipe('assets/pipe_up_top.png', 300, 400, 20)
 
 #objetos 
 objects = []
@@ -26,8 +26,10 @@ objects.append(pipe)
 
 #grupo de sprites
 all_sprites = pygame.sprite.Group()
+
 all_sprites.add(player.sprite)
 all_sprites.add(pipe.sprite)
+
 
 # Colors
 white = (255, 255, 255)
