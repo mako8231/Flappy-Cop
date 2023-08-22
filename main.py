@@ -2,6 +2,7 @@ import pygame
 import sys
 from lib.sprite import Sprite
 from lib.player import Player
+from lib.pipe import Pipe
 
 # Initialize pygame
 pygame.init()
@@ -16,11 +17,12 @@ pygame.display.set_caption("My Pygame App")
 bird_spr = 'assets/char.png'
 
 player = Player(100, 100, bird_spr)
-
+pipe = Pipe('assets/pipe_up_top.png', 300, 400, 0)
 
 #grupo de sprites
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player.sprite)
+all_sprites.add(pipe.sprite)
 
 # Colors
 white = (255, 255, 255)
@@ -53,9 +55,10 @@ while running:
     # Draw game elements
     # ... (your drawing code here)
 
-    scaled_sprite = pygame.transform.scale(player.sprite.image, (player.sprite.rect.width*2, player.sprite.rect.height*2))
-    player.sprite.image = scaled_sprite
-    
+    scaled_sprite_1 = pygame.transform.scale(player.sprite.image, (player.sprite.rect.width*2, player.sprite.rect.height*2))
+    scaled_sprite_2 = pygame.transform.scale(pipe.sprite.image, (pipe.sprite.rect.width*2, pipe.sprite.rect.height*2))
+    player.sprite.image = scaled_sprite_1
+    pipe.sprite.image = scaled_sprite_2
     player.draw()
     all_sprites.draw(screen)
 
