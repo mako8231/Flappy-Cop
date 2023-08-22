@@ -1,6 +1,7 @@
 import pygame
 import sys
-from lib import sprite
+from lib.sprite import Sprite
+from lib.player import Player
 
 # Initialize pygame
 pygame.init()
@@ -13,15 +14,13 @@ pygame.display.set_caption("My Pygame App")
 
 #bird 
 bird_spr = 'assets/char.png'
-sprite_x = 30
-sprite_y = screen_height//2
 
-#criar uma instância de sprite
-bird_spr = sprite.Sprite(bird_spr, sprite_x, sprite_y)
+player = Player(100, 100, bird_spr)
+
 
 #grupo de sprites
 all_sprites = pygame.sprite.Group()
-all_sprites.add(bird_spr)
+all_sprites.add(player.sprite)
 
 # Colors
 white = (255, 255, 255)
@@ -30,11 +29,23 @@ black = (0, 0, 0)
 # Game loop
 clock = pygame.time.Clock()
 running = True
+tempo_anterior = pygame.time.get_ticks()
+#controle de inputs do teclado
+def input_events():
+    pass
+
+#loop de controle da lógica do jogo
+def update(dt:float):
+    player.update(dt)
+    pass
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                player.velocidade['y'] = -5
 
     # Clear the screen
     screen.fill(white)
@@ -42,9 +53,20 @@ while running:
     # Draw game elements
     # ... (your drawing code here)
 
-    scaled_sprite = pygame.transform.scale(bird_spr.image, (bird_spr.rect.width*2, bird_spr.rect.height*2))
-    bird_spr.image = scaled_sprite
+    scaled_sprite = pygame.transform.scale(player.sprite.image, (player.sprite.rect.width*2, player.sprite.rect.height*2))
+    player.sprite.image = scaled_sprite
+    
+    player.draw()
     all_sprites.draw(screen)
+
+
+    #calculando o delta-time 
+    tempo_atual = pygame.time.get_ticks()
+    dt = (tempo_atual - tempo_anterior) / 1000.0
+    tempo_anterior = tempo_atual
+
+    update(dt)
+    input_events()
 
     # Update the display
     pygame.display.flip()
