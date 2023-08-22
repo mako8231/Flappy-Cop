@@ -19,6 +19,11 @@ bird_spr = 'assets/char.png'
 player = Player(100, 100, bird_spr)
 pipe = Pipe('assets/pipe_up_top.png', 300, 400, 0)
 
+#objetos 
+objects = []
+objects.append(player)
+objects.append(pipe)
+
 #grupo de sprites
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player.sprite)
@@ -38,7 +43,8 @@ def input_events():
 
 #loop de controle da lógica do jogo
 def update(dt:float):
-    player.update(dt)
+    for object in objects:
+        object.update(dt)
     pass
 
 while running:
@@ -55,11 +61,9 @@ while running:
     # Draw game elements
     # ... (your drawing code here)
 
-    scaled_sprite_1 = pygame.transform.scale(player.sprite.image, (player.sprite.rect.width*2, player.sprite.rect.height*2))
-    scaled_sprite_2 = pygame.transform.scale(pipe.sprite.image, (pipe.sprite.rect.width*2, pipe.sprite.rect.height*2))
-    player.sprite.image = scaled_sprite_1
-    pipe.sprite.image = scaled_sprite_2
-    player.draw()
+    for object in objects:
+        object.draw()
+        
     all_sprites.draw(screen)
 
 
