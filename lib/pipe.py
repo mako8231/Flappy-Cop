@@ -9,13 +9,12 @@ class Pipe():
         self.pipe_parts = []
        
     def update(self, dt):
-        self.x -= 10 * dt
+        self.x -= 170 * dt
         pass
     def draw(self):
         scaled_sprite = pygame.transform.scale(self.sprite.image, (self.sprite.rect.width*2, 
                                                                     self.sprite.rect.height*2))
-
         self.sprite.image = scaled_sprite
-        self.sprite.x = self.x 
-        self.sprite.y = self.y
+        self.sprite.rect.x = self.x 
+        self.sprite.rect.y = self.y
         pass

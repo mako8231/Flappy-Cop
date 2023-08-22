@@ -3,6 +3,7 @@ import sys
 from lib.sprite import Sprite
 from lib.player import Player
 from lib.pipe import Pipe
+from lib.spawner import Spawner
 
 # Initialize pygame
 pygame.init()
@@ -16,20 +17,24 @@ pygame.display.set_caption("My Pygame App")
 #bird 
 bird_spr = 'assets/char.png'
 
+#grupo de sprites
+all_sprites = pygame.sprite.Group()
+
+
 player = Player(100, 100, bird_spr)
-pipe = Pipe('assets/pipe_up_top.png', 300, 400, 20)
+spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_sprites)
+#pipe = Pipe('assets/pipe_up_top.png', 800, 400, 20)
+#pipe_2 = Pipe('assets/pipe_upside_down.png', 800, 20, -200)
+
+
 
 #objetos 
 objects = []
 objects.append(player)
-objects.append(pipe)
 
-#grupo de sprites
-all_sprites = pygame.sprite.Group()
 
-all_sprites.add(player.sprite)
-all_sprites.add(pipe.sprite)
-
+for obj in objects:
+    all_sprites.add(obj.sprite)
 
 # Colors
 white = (255, 255, 255)
@@ -47,6 +52,12 @@ def input_events():
 def update(dt:float):
     for object in objects:
         object.update(dt)
+    spawner.update(dt)
+
+    if (len(spawner.pipes) > 0):
+        for pipe in spawner.pipes: 
+            pipe.update(dt)    
+    
     pass
 
 while running:
@@ -65,7 +76,10 @@ while running:
 
     for object in objects:
         object.draw()
-        
+    if (len(spawner.pipes) > 0):
+        for pipe in spawner.pipes: 
+            pipe.draw()    
+    
     all_sprites.draw(screen)
 
 
