@@ -28,6 +28,21 @@ spawner = Spawner('assets/pipe_up_top.png', 'assets/pipe_upside_down.png', all_s
 objects = []
 objects.append(player)
 
+paralax_0 = pygame.image.load('assets/paralax.png')
+paralax_0_scaled = pygame.transform.scale(paralax_0, (800, 600))
+
+paralax_1 = pygame.image.load('assets/paralax_1.png')
+paralax_1_scaled = pygame.transform.scale(paralax_1, (800, 600))
+
+
+background_images = [
+    paralax_1_scaled,
+    paralax_0_scaled
+]
+
+background_positions = [0, 0]
+background_speeds = [0.4, 0.8]
+
 #score
 score = 0
 max_score = 0
@@ -130,14 +145,26 @@ while running:
     # Draw game elements
     # ... (your drawing code here)
 
+    for i in range(len(background_images)):
+        if player.alive:
+            background_positions[i] -= background_speeds[i]    
+
+    for i, position in enumerate(background_positions):
+        bg_width = background_images[i].get_width()
+        screen.blit(background_images[i], (position%bg_width - bg_width, 0))
+        screen.blit(background_images[i], (position%bg_width, 0))
+     
+
     for object in objects:
         object.draw()
     if (len(spawner.pipes) > 0):
         for pipe in spawner.pipes: 
             pipe.draw()    
+    #desenhar os objetos
     all_sprites.draw(screen)
     screen.blit(m_score_text, m_score_text_rect)
     screen.blit(score_text, score_text_rect)
+
     if not player.alive:
         screen.blit(game_over, game_over_rect)
 
