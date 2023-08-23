@@ -41,7 +41,7 @@ background_images = [
 ]
 
 background_positions = [0, 0]
-background_speeds = [0.4, 0.8]
+background_speeds = [5, 10]
 
 #score
 score = 0
@@ -111,6 +111,11 @@ def save_file(path):
 #carregar o arquivo de max score 
 max_score = load_file('save.json')
 while running:
+    #calculando o delta-time 
+    tempo_atual = pygame.time.get_ticks()
+    dt = (tempo_atual - tempo_anterior) / 1000.0
+    tempo_anterior = tempo_atual
+
     #texto do score 
     score_text = font.render("Score: {}".format(int(score)), False, (255, 255, 255))
     score_text_rect = score_text.get_rect(center=(100, 60))
@@ -147,7 +152,7 @@ while running:
 
     for i in range(len(background_images)):
         if player.alive:
-            background_positions[i] -= background_speeds[i]    
+            background_positions[i] -= background_speeds[i] * dt  
 
     for i, position in enumerate(background_positions):
         bg_width = background_images[i].get_width()
@@ -167,11 +172,6 @@ while running:
 
     if not player.alive:
         screen.blit(game_over, game_over_rect)
-
-    #calculando o delta-time 
-    tempo_atual = pygame.time.get_ticks()
-    dt = (tempo_atual - tempo_anterior) / 1000.0
-    tempo_anterior = tempo_atual
     
     if player.alive:
         score += 1 * dt
@@ -186,7 +186,7 @@ while running:
     
 
     # Limit frames per second
-    clock.tick(60)
+    clock.tick(30)
 
 # Quit pygame
 pygame.quit()
