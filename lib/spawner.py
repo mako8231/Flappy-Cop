@@ -4,7 +4,7 @@ from numpy import random
 
 #PARAMETROS DO CANO
 PIPE_DOWN_X = 800
-PIPE_DOWN_Y = 9
+PIPE_DOWN_Y = 4
 
 PIPE_UP_X = 800
 PIPE_UP_Y = 430
@@ -21,11 +21,11 @@ class Spawner():
         self.all_sprites = all_sprites
     def update(self, dt):
         self.intervalo += dt
-        if self.intervalo > MAX_INTERVALO:
+        if self.intervalo > MAX_INTERVALO and self.player.alive == True:
             self.intervalo = 0 
             #gerar dois canos de alturas aleatórias a cada intervalo de tempo
             up_pipe = Pipe(self.up_pipe_path, PIPE_UP_X, PIPE_UP_Y, random.randint(-20, 70), self.player)
-            down_pipe = Pipe(self.down_pipe_path, PIPE_DOWN_X, PIPE_DOWN_Y, random.randint(-120, 0), self.player)
+            down_pipe = Pipe(self.down_pipe_path, PIPE_DOWN_X, PIPE_DOWN_Y, random.randint(-80, 0), self.player)
             
             self.all_sprites.add(up_pipe.sprite)
             self.all_sprites.add(down_pipe.sprite)

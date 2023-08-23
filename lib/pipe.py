@@ -20,7 +20,7 @@ class Pipe():
             self.player.alive = False 
       
         if self.player.alive:
-            self.x -= 170 * dt
+            self.x -= 230 * dt
         pass
     def draw(self):
         self.sprite.rect.x = self.x 

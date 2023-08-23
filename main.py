@@ -1,5 +1,7 @@
 import pygame
 import sys
+import os 
+import json
 from lib.sprite import Sprite
 from lib.player import Player
 from lib.pipe import Pipe
@@ -28,6 +30,7 @@ objects.append(player)
 
 #score
 score = 0
+max_score = 0
 
 for obj in objects:
     all_sprites.add(obj.sprite)
@@ -59,11 +62,51 @@ def update(dt:float):
             pipe.update(dt)    
     
     pass
+ 
+def restart_game(player, spawner):
+    for pipe in spawner.pipes:
+        pipe.sprite.kill
+        all_sprites.remove(pipe.sprite)
+    
+    spawner.pipes.clear()
+    player.y = 100
+    player.alive = True 
 
+def load_file(path):
+    if os.path.exists(path):
+        with open(path, 'r') as file:
+            data = json.load(file)
+        return data['max_score'] 
+    return 0
+        
+
+def save_file(path):
+    if os.path.exists(path):
+        with open(path, 'r') as file:
+            data = json.load(file)
+        
+        data['max_score'] = max_score
+        with open(path, 'w') as file:
+            json.dump(data, file, indent=4)
+    else: 
+        data = {'max_score': max_score}
+        with open(path, 'w') as file:
+            json.dump(data, file, indent=4)
+
+#carregar o arquivo de max score 
+max_score = load_file('save.json')
 while running:
-    text = font.render("Max Score: {}".format(int(score)), False, (255, 255, 255))
-    text_rect = text.get_rect(center=(100, 100))
+    #texto do score 
+    score_text = font.render("Score: {}".format(int(score)), False, (255, 255, 255))
+    score_text_rect = score_text.get_rect(center=(100, 60))
 
+    
+    m_score_text = font.render("Max Score: {}".format(int(max_score)), False, (255, 255, 255))
+    m_score_text_rect = m_score_text.get_rect(center=(100, 100))
+
+    #mostrar a frase GAME OVER quando o player morrer" 
+    game_over = font.render("Aperte R para continuar.".format(int(score)), False, (255, 255, 255))
+    game_over_rect = game_over.get_rect(center=(screen_width//2, screen_height//2))
     
 
     for event in pygame.event.get():
@@ -74,6 +117,12 @@ while running:
                 player.velocidade['y'] = -5
             if event.key == pygame.K_z:
                 player.velocidade['y'] = -5
+        if event.type == pygame.KEYDOWN and not player.alive:
+            if event.key == pygame.K_r:
+                restart_game(player, spawner)
+                save_file('save.json')
+                score = 0
+        
 
     # Clear the screen
     screen.fill(gray)
@@ -87,8 +136,10 @@ while running:
         for pipe in spawner.pipes: 
             pipe.draw()    
     all_sprites.draw(screen)
-    screen.blit(text, text_rect)
-   
+    screen.blit(m_score_text, m_score_text_rect)
+    screen.blit(score_text, score_text_rect)
+    if not player.alive:
+        screen.blit(game_over, game_over_rect)
 
     #calculando o delta-time 
     tempo_atual = pygame.time.get_ticks()
@@ -97,6 +148,8 @@ while running:
     
     if player.alive:
         score += 1 * dt
+        if max_score < score:
+            max_score = score 
 
     update(dt)
     input_events()

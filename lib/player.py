@@ -1,6 +1,6 @@
 import pygame 
 from lib import sprite 
-LINEAR_VEL = 10
+LINEAR_VEL = 20
 
 class Player():
     def __init__(self, x, y, picture_path):
@@ -18,12 +18,15 @@ class Player():
         self.x += self.velocidade['x']
         self.y += self.velocidade['y'] 
 
+        if self.y > 800:
+            self.alive = False  
+
     def input_handling(self):
         pass
 
     def draw(self):
-        scaled_sprite = pygame.transform.scale(self.sprite.image, (self.sprite.rect.width*1.5, 
-                                                                          self.sprite.rect.height*1.5))
+        scaled_sprite = pygame.transform.scale(self.sprite.image, (self.sprite.rect.width*2.0, 
+                                                                          self.sprite.rect.height*2.0))
         self.sprite.image = scaled_sprite
         self.sprite.rect.x = self.x 
         self.sprite.rect.y = self.y 
